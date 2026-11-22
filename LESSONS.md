@@ -182,6 +182,16 @@ keep each change to one PR, run every CI check locally, and draft the PR text fo
 review and post. Many projects ban AI-written comments. Assume they do unless they say
 otherwise. Never let the agent post to someone else's project on its own.
 
+## Modelling the problem
+
+### 26. Ask for the state machine before the code.
+A power manager treated "doesn't answer ping" as "off". Nobody had listed the state
+"running, but with its network cable unplugged", so when that happened the wake script
+power-cycled a healthy, running machine three times. Asking the agent for every state, every
+event and every state × event cell turns hidden edge cases into blank cells you can see,
+and shows quickly whether the agent (and you) really understand the domain. See
+`STATE-MACHINES.md`.
+
 ## Visual output
 
 ### 25. Render it and look at it.

@@ -19,6 +19,7 @@ then give the whole folder to Claude and let it adapt the templates to you
 | `templates/project-CLAUDE.md` | Claude | a starter per-repository `CLAUDE.md` / `AGENTS.md` |
 | `templates/github/` | Claude | a hardened GitHub Actions CI and secret-scan workflow, and a PR template |
 | `PRIOR-ART-AND-SKILLS.md` | both | look before building: research existing libraries and platform features, use skills, and only then write custom code |
+| `STATE-MACHINES.md` | both | ask the agent for a finite state machine of anything stateful: every state × event, so edge cases show up before users hit them |
 | `CODE-INTEL.md` | both | Rarefaction, Serena and graphify: code-navigation tools for the agent, and how to check that they work |
 | `GITHUB.md` | both | branches, PRs as the record, changelogs, free CI in private repos |
 | `CLOUD.md` | both | DigitalOcean for always-on services, OpenRouter for model APIs, and how to keep secrets out of transcripts |
@@ -28,7 +29,8 @@ then give the whole folder to Claude and let it adapt the templates to you
 1. `LESSONS.md`, about 15 minutes. This is the part worth the most.
 2. `PRIOR-ART-AND-SKILLS.md`, the habit that saves the most wasted work.
 3. `templates/global-CLAUDE.md`, to see what a "constitution" for the agent looks like.
-4. Skim the rest. Come back to each when you need it.
+4. `STATE-MACHINES.md`, a short read with a prompt you will use often.
+5. Skim the rest. Come back to each when you need it.
 
 ## Setup (about 30 minutes)
 
@@ -57,7 +59,7 @@ then give the whole folder to Claude and let it adapt the templates to you
 - Add `.claude/worktrees/`, `.claude/settings.local.json` and `graphify-out/` to your
   global git ignore (`~/.config/git/ignore`).
 
-## Three ideas behind all of it
+## Ideas behind all of it
 
 - **Write the rule down where the agent will read it.** A correction you make in chat is
   lost when the session ends. A line in `CLAUDE.md` is applied in every later session.
@@ -69,6 +71,10 @@ then give the whole folder to Claude and let it adapt the templates to you
   for prior art and record what it found first (`PRIOR-ART-AND-SKILLS.md`). Give it the
   project's call graph (Rarefaction, in `CODE-INTEL.md`) so it reads code precisely
   instead of grepping.
+- **Make the agent show its model of the problem.** For anything with a lifecycle or protocol,
+  ask for the state machine first: every state, every event, every cell of the table
+  (`STATE-MACHINES.md`). The blank cells are the edge cases, and a wrong diagram is a
+  misunderstanding you can correct in one sentence, before any code exists.
 - **Trust, but make it cheap to verify.** The agent's report of success is a claim. Tests,
   CI, and a quick look at the real output turn it into a fact.
 

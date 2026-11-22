@@ -33,6 +33,13 @@ and record the answer in that project's CLAUDE.md.
   accessibility, dependency/bundle cost, offline needs. Prefer a maintained solution with a
   small adapter. Record candidates, evidence and decision in the project notes. If custom
   code still wins, name the requirement nothing else meets and keep it small.
+- Model stateful things as finite state machines. Before building or changing anything
+  with a lifecycle, protocol, retries or sleep/wake, and before debugging "it got into a
+  weird state", write the states, the events, and a transition table covering every
+  state × event pair (next state and action, or "ignored"/"impossible" with a reason),
+  plus a Mermaid diagram. List unhandled cells and open questions for me. Prefer one
+  explicit state value with exhaustive matching over sets of booleans, and keep the
+  diagram in the repo, updated with the code.
 - If a tool we depend on has a real flaw and there is a clearly better way, note it as a
   candidate upstream contribution (you draft, I post). Don't just patch around it locally.
 - <KEEP ONLY IF TRUE: For my pre-release projects with no real users or production data,
