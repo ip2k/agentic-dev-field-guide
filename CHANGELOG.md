@@ -6,6 +6,10 @@ All notable changes to this guide are recorded here, in
 ## [Unreleased]
 
 ### Added
+- `STATE-MACHINES.md`: ask the agent for a finite state machine (states, events, a full
+  state × event table and a Mermaid diagram) to find edge cases before they happen and to
+  check that agent and developer understand the problem the same way. Adds lesson 26 and
+  a matching rule in the global template.
 - `PRIOR-ART-AND-SKILLS.md`: research existing libraries and platform features before
   building, use and adopt skills deliberately, and use Rarefaction before grepping.
   The global and project templates and the setup instructions now carry these rules.
