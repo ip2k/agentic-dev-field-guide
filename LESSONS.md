@@ -89,8 +89,8 @@ three of five verifiers died and the run returned almost nothing. Rules:
 
 ### 12. Pick the lightest model and effort that works.
 Set the model and the reasoning effort explicitly for each sub-agent. If you set neither, a
-sub-agent inherits the session's, so a session at `xhigh` pays `xhigh` prices for every file
-search it sends out. Pick by how much the step has to *decide*: Haiku for extraction and
+sub-agent usually inherits the session's, so a session at `xhigh` spends `xhigh` effort, and
+its tokens, on every file search it sends out. Pick by how much the step has to *decide*: Haiku for extraction and
 checked mechanical work, Sonnet for scoped implementation, Opus at high effort for
 architecture, security and hard debugging, Fable for the hardest novel problems and the
 advisor or project-manager seat. Escalate one step at a time
@@ -184,7 +184,14 @@ keep each change to one PR, run every CI check locally, and draft the PR text fo
 review and post. Many projects ban AI-written comments. Assume they do unless they say
 otherwise. Never let the agent post to someone else's project on its own.
 
-## Modelling the problem
+## Visual output
+
+### 25. Render it and look at it.
+For diagrams, charts and UI, the agent should render the output and inspect a screenshot
+before calling it done. Overlapping labels, clipped text and numbers jammed against a gauge
+are invisible in the source and obvious in the picture.
+
+## Modelling the problem and its costs
 
 ### 26. Ask for the state machine before the code.
 A power manager treated "doesn't answer ping" as "off". Nobody had listed the state
@@ -209,13 +216,6 @@ document every PR, read the whole codebase. The bottleneck moves to your review 
 verification. See `GAME-THEORY.md`.
 
 ### 29. Somebody in another field has solved your problem.
-Fields name the same problems differently: hysteresis, debounce, cooldown and rate limiting
+Fields name the same problems differently: hysteresis, debounce and a thermostat's deadband
 are one idea. Ask the agent to restate a hard problem in neutral terms and say how other
 industries solve it, with their terms of art. See `CROSS-DOMAIN.md`.
-
-## Visual output
-
-### 25. Render it and look at it.
-For diagrams, charts and UI, the agent should render the output and inspect a screenshot
-before calling it done. Overlapping labels, clipped text and numbers jammed against a gauge
-are invisible in the source and obvious in the picture.

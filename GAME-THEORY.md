@@ -38,8 +38,8 @@ Cheap generation moves the bottleneck. It does not remove it.
   output.
 - **Verification costs more than generation.** Code that writes itself is cheap. Knowing
   it is right is not. Invest in CI, type checkers, property tests and reviewers (human or
-  a stronger model) in proportion. A 10× increase in generated code with the same review
-  capacity is a 10× increase in unreviewed code.
+  a stronger model) in proportion. Ten times the generated code with the same review
+  capacity means most of the new code goes unreviewed.
 - **Mistakes scale too.** A wrong instruction in CLAUDE.md is applied in every session.
   A bad pattern gets copied across a hundred files in an hour. Cheap action raises the
   value of good defaults and guardrails.
@@ -47,10 +47,11 @@ Cheap generation moves the bottleneck. It does not remove it.
 ## Incentives: the agent is a player too
 
 Economists call it the **principal–agent problem**: you (the principal) want working
-software, and the agent is rewarded, loosely, for *looking* done. Most bad agent
-behaviour is a rational response to the incentives you set up:
+software, and the agent is rewarded, loosely, for *looking* done. Much bad agent
+behaviour looks like a rational response to the incentives you set up:
 
-- **Goodhart's law:** "when a measure becomes a target, it ceases to be a good measure."
+- **Goodhart's law**, in Marilyn Strathern's well-known wording: "When a measure becomes a
+  target, it ceases to be a good measure."
   Ask an agent to "make the tests pass" and the cheapest path may be to weaken the
   tests. Make the target the real goal ("the feature works, and here is how we will check"),
   and protect the measure (CI the agent cannot edit, tests reviewed separately).
@@ -87,8 +88,9 @@ recognise the names:
 - **Mechanism design:** designing the rules so that each player's selfish best move is
   the outcome you want, such as auctions, bounties and review rotations. A good CLAUDE.md
   is a small piece of mechanism design.
-- **Jevons paradox:** making something cheaper usually increases total use. Cheap agent
-  work tends to raise your total spend and output, not lower it. Budget accordingly.
+- **Jevons paradox** (economics, not strictly game theory): when something gets cheaper to
+  use, total use can grow so much that total spend rises. Cheap agent work often does
+  this. Budget for more total spend, not less.
 - **Comparative advantage:** even if the agent were better at everything, you still gain
   by each doing what you are *relatively* best at. For you that is usually judgment,
   taste, priorities and accountability.

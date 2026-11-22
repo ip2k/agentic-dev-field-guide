@@ -19,6 +19,10 @@ All notable changes to this guide are recorded here, in
   and the unhandled cells behind familiar frustrations.
 - Lessons 27–29. The global template now covers four model tiers, compaction, cross-field
   search and re-pricing habits.
+
+### Changed
+- Lesson 12 now covers four model tiers (Haiku, Sonnet, Opus, Fable) and how sub-agents
+  inherit the session's model and effort.
 - `STATE-MACHINES.md`: ask the agent for a finite state machine (states, events, a full
   state × event table and a Mermaid diagram) to find edge cases before they happen and to
   check that agent and developer understand the problem the same way. Adds lesson 26 and

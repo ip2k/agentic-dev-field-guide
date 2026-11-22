@@ -16,7 +16,7 @@ from another one":
 
 - **TRIZ** (a Russian acronym for "theory of inventive problem solving"). Genrich
   Altshuller and colleagues studied a very large number of patents from many industries.
-  They found that most inventions reuse a small set of general principles: about 40
+  They found that most inventions reuse a small set of general principles: 40
   "inventive principles", plus a "contradiction matrix" for choosing between them. The
   method: restate your problem in general terms ("I need it stronger without making it
   heavier"), look up how other fields resolved that contradiction, and translate the
@@ -24,7 +24,7 @@ from another one":
 - **Analogical transfer** (or analogical reasoning): the cognitive-science term. The key
   finding is the difference between a *surface* resemblance (both involve water) and a
   *structural* one (both have a bottleneck feeding a queue). Only the structural ones
-  transfer.
+  transfer reliably. Surface ones are easier to notice, which is the trap.
 - **Technology brokering**, the **Medici effect**, cross-pollination: business-book terms for
   people and firms that carry ideas between industries, and for the innovation that
   happens where fields meet.
@@ -40,23 +40,23 @@ borrowed words, and each one marks a solution that crossed over:
 | general problem | what different fields call their solution |
 |---|---|
 | Don't let a fault spread | electrical **circuit breaker**; stock-market **circuit breaker** (trading halts); software **circuit breaker** pattern; ship **bulkheads**, which software also borrowed |
-| Test on a small, expendable group first | the miner's **canary**; medicine's **phase 1 trial**; software's **canary deploy**; retail's **test market** |
-| Something must not react to every tiny change | physics' **hysteresis**; electronics' **debounce**; games' **cooldown**; APIs' **rate limiting**; thermostats' **deadband** |
-| Only one user of a shared resource at a time | single-track railways' **token** (a physical staff the driver must hold); computing's **mutex** and **token ring**; a meeting's talking stick |
-| Slow the producer when the consumer is full | plumbing's **back pressure**; networking's **flow control**; manufacturing's **kanban** WIP limits |
+| Expose a small group first, so a failure stays small | the miner's **canary**; medicine's **phase 1 trial**; software's **canary deploy**; retail's **test market** |
+| Something must not react to every tiny change | physics' **hysteresis**; electronics' **debounce**; games' **cooldown**; thermostats' **deadband** |
+| Only one user of a shared resource at a time | single-track railways' **token** (a physical staff, tablet or key the driver must hold); computing's **mutex** and **token ring**; a meeting's talking stick |
+| Slow the producer when the consumer is full | fluid dynamics' **back pressure** (where software got the word); networking's **flow control**; manufacturing's **kanban** WIP limits |
 | Decide what to handle first when overloaded | medicine's **triage**; incident **severity levels**; support **priority queues**; load shedding on the power grid |
 | Confirm the instruction was understood | aviation and the military's **read-back** / **hear-back**; a waiter repeating your order; asking an agent to restate its brief before it starts |
-| Make it impossible to skip a critical step | aviation **checklists**; the WHO surgical safety checklist (borrowed from aviation); software **pre-commit hooks** and **CI gates**; Toyota's **poka-yoke** (mistake-proofing) |
-| Anyone may stop the line when they see a defect | Toyota's **andon cord**; aviation's **crew resource management**; failing CI blocking a merge |
+| Make it hard to skip a critical step | aviation **checklists**; the WHO surgical safety checklist (modelled on aviation checklists); software **pre-commit hooks** and **CI gates**; Toyota's **poka-yoke** (mistake-proofing) |
+| Anyone may stop the line when they see a defect | Toyota's **andon cord**; aviation's **crew resource management** (any crew member is expected to speak up); failing CI blocking a merge |
 | Keep an append-only record so mistakes can be found and fixed | accounting's **double-entry ledger** and **reconciliation**; databases' **write-ahead log**; **event sourcing**; filesystem **journaling** |
-| Hand work over without losing anything | hospitals' shift **handover** (one children's hospital redesigned its ICU handover after watching a Formula 1 pit crew); a **handoff** note before an agent compacts |
+| Hand work over without losing anything | hospitals' patient **handover** (Great Ormond Street Hospital redesigned its surgery-to-ICU handover with help from Formula 1 pit-stop teams); a **handoff** note before an agent compacts |
 | Spread information by contact | epidemiology's **SIR models**; distributed systems' **gossip** (or "epidemic") protocols; marketing's "viral" spread |
 | State the goal so people can adapt the plan | the military's **commander's intent**; a good sub-agent brief ("the goal is X; if the plan breaks, optimise for X") |
 | Prepare everything before the rush | a kitchen's **mise en place**; a pilot's pre-flight; warming caches and pre-building images before a deploy |
 | Practise in a realistic but safe setting | theatre's **dress rehearsal**; flight **simulators**; software **staging** environments; fire **drills** and **game days** |
 
-Every row is a solution that one field paid for, in accidents, failures and lost money,
-and another field reused for free once someone noticed the resemblance.
+Many rows are solutions one field paid for in accidents, failures and lost money. Some
+were borrowed directly; others were found independently.
 
 ## Why AI models are good at this
 
