@@ -1,0 +1,48 @@
+name: ci
+
+# Template. Claude: replace the setup and the three `run:` steps with this repository's real
+# install/build/test commands, pin the action versions to current releases, and trim the
+# matrix to what the project actually supports. Linux runners are the cheapest; macOS and
+# Windows minutes cost more against a private repo's allowance, so add them only where the
+# platform matters.
+#
+# `pull_request`, never `pull_request_target`: a fork's run gets a read-only token and no
+# secrets, which is what makes running someone else's code here safe.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Least privilege: read the repo and nothing else. Widen per job only when needed.
+permissions:
+  contents: read
+
+# A new push to the same PR cancels the old run instead of paying for both.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20          # a hung job should not burn the month's minutes
+    strategy:
+      fail-fast: false           # "fails only on X" is the diagnosis; don't hide it
+      matrix:
+        os: [ubuntu-latest]      # add macos-latest / windows-latest only if needed
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false   # the token is not left in .git/config for tests to read
+      # --- language setup: pick one, with its built-in dependency cache ---
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      # - uses: actions/setup-python@v6       # with: { python-version: "3.12", cache: pip }
+      # - uses: dtolnay/rust-toolchain@stable  # plus Swatinem/rust-cache@v2
+      # --------------------------------------------------------------------
+      - run: npm ci                 # frozen install: lockfile changes must be visible in the PR
+      - run: npm run build
+      - run: npm test

@@ -1,0 +1,74 @@
+# Agentic dev field guide
+
+This packet holds the working setup that one developer arrived at after about a year of
+daily AI-assisted development with Claude Code. Most of the work happens in private repos. Most of the rules
+in it exist because something went wrong without them. Take what fits. Leave the rest.
+
+It is written for two readers: **you**, and **your Claude**. Read the files once yourself,
+then give the whole folder to Claude and let it adapt the templates to you
+(see "Setup" below).
+
+## What is in here
+
+| file | for | what |
+|---|---|---|
+| `README.md` | you | this page |
+| `START-HERE-FOR-CLAUDE.md` | your Claude | instructions for Claude: interview you, then install adapted versions of the templates |
+| `LESSONS.md` | both | the hard-won lessons, each with the incident behind it |
+| `templates/global-CLAUDE.md` | Claude | a starter `~/.claude/CLAUDE.md`, the instructions every session reads |
+| `templates/project-CLAUDE.md` | Claude | a starter per-repository `CLAUDE.md` / `AGENTS.md` |
+| `templates/github/` | Claude | a hardened GitHub Actions CI and secret-scan workflow, and a PR template |
+| `CODE-INTEL.md` | both | Rarefaction, Serena and graphify: code-navigation tools for the agent, and how to check that they work |
+| `GITHUB.md` | both | branches, PRs as the record, changelogs, free CI in private repos |
+| `CLOUD.md` | both | DigitalOcean for always-on services, OpenRouter for model APIs, and how to keep secrets out of transcripts |
+
+## Reading order
+
+1. `LESSONS.md`, about 15 minutes. This is the part worth the most.
+2. `templates/global-CLAUDE.md`, to see what a "constitution" for the agent looks like.
+3. Skim the rest. Come back to each when you need it.
+
+## Setup (about 30 minutes)
+
+1. Install Claude Code (CLI, desktop app, or IDE extension) and sign in.
+2. Clone it somewhere permanent: `git clone https://github.com/ip2k/agentic-dev-field-guide ~/agentic-dev-field-guide`.
+3. Start a Claude Code session **in that folder** and say:
+
+   > Read START-HERE-FOR-CLAUDE.md and follow it.
+
+4. Answer its questions. It will propose a `~/.claude/CLAUDE.md` and an install plan. You
+   approve each step. It installs nothing that runs automatically (hooks, cron jobs)
+   without a separate yes from you.
+5. In your first real project, ask Claude to write that repository's `CLAUDE.md` from
+   `templates/project-CLAUDE.md` after it has read the code.
+
+## First week: things worth knowing
+
+- **Employer code:** check your employer's policy on AI tools and on sending code to
+  external services before you use any of this at work.
+- `/init` drafts a project `CLAUDE.md` from the code. `/memory` shows which instruction
+  files are loaded. `/compact` condenses a long session. `/clear` starts fresh.
+- Permission prompts are the safety net. Allow read-only tools permanently, and keep
+  prompts for writes, pushes and anything outward-facing.
+- Watch your usage (`/usage` in the CLI, or the app's usage view), especially before
+  asking for many parallel agents.
+- Add `.claude/worktrees/`, `.claude/settings.local.json` and `graphify-out/` to your
+  global git ignore (`~/.config/git/ignore`).
+
+## Three ideas behind all of it
+
+- **Write the rule down where the agent will read it.** A correction you make in chat is
+  lost when the session ends. A line in `CLAUDE.md` is applied in every later session.
+  Every time you say "no, not like that" twice, it becomes a rule.
+- **The agent works on a branch and proves it with tests. You read the PR.** The pull request
+  description is the record of what changed, why, and how it was tested.
+- **Trust, but make it cheap to verify.** The agent's report of success is a claim. Tests,
+  CI, and a quick look at the real output turn it into a fact.
+
+## About the details
+
+Prices, free-tier limits and tool versions in here were checked on 2026-11-21 and change
+often. Each file links to its primary source. Check before relying on a number.
+
+Model names in the templates (Opus, Sonnet) are the Claude model tiers available at the time
+of writing. Use whatever the current equivalents are.

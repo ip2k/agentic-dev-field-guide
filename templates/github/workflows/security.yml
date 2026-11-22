@@ -1,0 +1,35 @@
+name: security
+
+# Secret scanning on every push and PR, plus a weekly full-history scan. A push or PR scan
+# reads only that event's commits; only a full-history scan finds a secret in an old commit.
+#
+# Note: gitleaks-action is free for personal accounts; for repositories owned by a GitHub
+# *organization* it needs a free GITLEAKS_LICENSE secret (see the action's README). The
+# alternative is installing the gitleaks binary and running `gitleaks git .` yourself.
+# Also turn on GitHub's own secret scanning / push protection in the repo settings if your
+# plan offers it for private repos.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 6 * * 1'   # Mondays 06:17 UTC; an odd minute avoids the top-of-hour rush
+
+permissions:
+  contents: read
+  pull-requests: read   # gitleaks-action lists a PR's commits through the API
+
+jobs:
+  secrets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0              # all history, for the scheduled/manual full scan
+          persist-credentials: false
+      - uses: gitleaks/gitleaks-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}   # org-owned repos only
