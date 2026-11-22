@@ -20,6 +20,9 @@ then give the whole folder to Claude and let it adapt the templates to you
 | `templates/github/` | Claude | a hardened GitHub Actions CI and secret-scan workflow, and a PR template |
 | `PRIOR-ART-AND-SKILLS.md` | both | look before building: research existing libraries and platform features, use skills, and only then write custom code |
 | `STATE-MACHINES.md` | both | ask the agent for a finite state machine of anything stateful: every state × event, so edge cases show up before users hit them |
+| `MODELS-EFFORT-CONTEXT.md` | both | right-sizing: which model (Haiku, Sonnet, Opus, Fable) for which work, what effort levels do, context window size, when and how to compact, advisors and orchestrators |
+| `GAME-THEORY.md` | both | look at a process as a game: cheap agent work flips old best practices, moves the bottleneck to review, and changes incentives |
+| `CROSS-DOMAIN.md` | both | borrow proven solutions from other industries by mapping their jargon to the general problem (TRIZ, analogical transfer) |
 | `CODE-INTEL.md` | both | Rarefaction, Serena and graphify: code-navigation tools for the agent, and how to check that they work |
 | `GITHUB.md` | both | branches, PRs as the record, changelogs, free CI in private repos |
 | `CLOUD.md` | both | DigitalOcean for always-on services, OpenRouter for model APIs, and how to keep secrets out of transcripts |
@@ -29,8 +32,10 @@ then give the whole folder to Claude and let it adapt the templates to you
 1. `LESSONS.md`, about 15 minutes. This is the part worth the most.
 2. `PRIOR-ART-AND-SKILLS.md`, the habit that saves the most wasted work.
 3. `templates/global-CLAUDE.md`, to see what a "constitution" for the agent looks like.
-4. `STATE-MACHINES.md`, a short read with a prompt you will use often.
-5. Skim the rest. Come back to each when you need it.
+4. `MODELS-EFFORT-CONTEXT.md`, before you start sending work to sub-agents.
+5. `STATE-MACHINES.md`, `GAME-THEORY.md` and `CROSS-DOMAIN.md`: three ways of thinking
+   that get much more out of a model with broad knowledge.
+6. Skim the rest. Come back to each when you need it.
 
 ## Setup (about 30 minutes)
 
@@ -75,6 +80,9 @@ then give the whole folder to Claude and let it adapt the templates to you
   ask for the state machine first: every state, every event, every cell of the table
   (`STATE-MACHINES.md`). The blank cells are the edge cases, and a wrong diagram is a
   misunderstanding you can correct in one sentence, before any code exists.
+- **Right-size the work.** The lightest model and effort that does a step reliably, a
+  stronger model where judgment matters, and a context window kept small enough to stay
+  sharp (`MODELS-EFFORT-CONTEXT.md`).
 - **Trust, but make it cheap to verify.** The agent's report of success is a claim. Tests,
   CI, and a quick look at the real output turn it into a fact.
 
@@ -83,5 +91,5 @@ then give the whole folder to Claude and let it adapt the templates to you
 Prices, free-tier limits and tool versions in here were checked on 2026-11-21 and change
 often. Each file links to its primary source. Check before relying on a number.
 
-Model names in the templates (Opus, Sonnet) are the Claude model tiers available at the time
+Model names in the templates (Haiku, Sonnet, Opus, Fable) are the Claude model tiers available at the time
 of writing. Use whatever the current equivalents are.

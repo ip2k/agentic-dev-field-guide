@@ -40,6 +40,10 @@ and record the answer in that project's CLAUDE.md.
   plus a Mermaid diagram. List unhandled cells and open questions for me. Prefer one
   explicit state value with exhaustive matching over sets of booleans, and keep the
   diagram in the repo, updated with the code.
+- For hard or novel problems, check how other fields solve the same structure; give me
+  their terms of art and where each analogy breaks.
+- Re-price old habits: if a convention exists because work was expensive, say whether
+  agent-cheap work changes it. Never meet a metric by weakening the measure.
 - If a tool we depend on has a real flaw and there is a clearly better way, note it as a
   candidate upstream contribution (you draft, I post). Don't just patch around it locally.
 - <KEEP ONLY IF TRUE: For my pre-release projects with no real users or production data,
@@ -100,9 +104,14 @@ and record the answer in that project's CLAUDE.md.
 - Check usage limits (including per-model weekly limits) before launching sub-agents or
   workflows. State the agent count, model and effort first. Commit work in progress before
   a long run.
-- Set model and effort explicitly on every sub-agent: the large model at high effort for
-  architecture, hard debugging, security and final review; the smaller model at low/medium
-  effort for searches, running tests, mechanical edits and scoped implementation.
+- You may choose, and must set explicitly, the model and effort of every sub-agent
+  (lightest that works): Haiku/medium for extraction, searches and checked mechanical work
+  (low only for single-shot, checked steps); Sonnet/low-medium for scoped implementation,
+  tests and triage; Opus/high for architecture, security, hard debugging and review;
+  Fable/high for the hardest, most novel problems. Escalate one step on evidence and say
+  why; xhigh/max only when I ask, or after high failed for lack of reasoning.
+- For long, novel projects, run the main session (or the advisor) on Fable or Opus: it
+  plans and judges, sub-agents do scoped work.
 - Brief sub-agents fully (goal, files, what done looks like) and require an exit report:
   outcome, what changed, checks run, what remains.
 
@@ -115,7 +124,9 @@ and record the answer in that project's CLAUDE.md.
 ## Long sessions
 
 - When the work changes phase, write a short handoff (objective, constraints, branch and
-  pushed SHA, what's left, next step) before compacting or stopping.
+  pushed SHA, what's left, next step) before compacting or stopping. Compact at natural
+  breaks, never mid-debugging; `/clear` between unrelated tasks. The auto-compaction window
+  is `autoCompactWindow` in ~/.claude/settings.json (<e.g. 300000>); don't change it unasked.
 
 ## Writing
 

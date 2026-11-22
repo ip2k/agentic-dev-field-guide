@@ -37,6 +37,34 @@ where "it worked, then it got into a weird state" is the bug report.
 It is also a strong first move when **debugging** such a system: ask for the machine as
 the code actually implements it (not as intended), then compare the two.
 
+## State machines are everywhere
+
+You don't need to write software for this way of thinking to pay off. Much of the
+everyday world is made of state machines, and many everyday frustrations are an
+unhandled cell. Once you see them, you start predicting where things will break.
+
+| everyday system | states | the cell that bites |
+|---|---|---|
+| **Turnstile** (the textbook example) | locked, unlocked | someone pushes while locked: the bar holds, nothing else happens |
+| **Traffic light** | green, yellow, red, flashing (fault), dark | a power cut: lights go dark, or to all-way flashing red. In much of North America the law treats a dark signal as an all-way stop: a fallback state written into the rules of the road |
+| **Elevator** | idle, moving up, moving down, doors open, out of service | pressing the call button again does nothing (it's already latched). People press it again anyway, because the button doesn't show that state clearly |
+| **Thermostat** | heating, idle, cooling | without *hysteresis* (a gap between "turn on" and "turn off" temperatures), it flips on and off every few seconds. The fix is thresholds that depend on the current state (the machine remembers which way it was going), not a better sensor |
+| **Microwave** | idle, running, paused (door open), done | open the door mid-cook, close it: it waits for Start, because safety rules forbid an automatic restart. How long it keeps the remaining time varies by brand |
+| **Washing machine** | fill, wash, drain, spin, done, door locked | why the door stays locked for a minute after the cycle ends: there is an "unlocking" state you can't see while the interlock releases |
+| **Parcel delivery** | label created, in transit, out for delivery, delivered, exception, returned | "delivered" to a neighbour's door is the same state as delivered to yours. The model has no state for "delivered to the wrong place" |
+| **A flight** | scheduled, boarding, departed, delayed, cancelled, diverted | delayed, then cancelled, then un-cancelled. Rebooking systems that never planned for the third step strand people |
+| **Library book** | on shelf, on hold, checked out, overdue, lost, in repair | returned *after* being marked lost and billed. Every library has had to decide that cell |
+| **Job application** | applied, screening, interviewing, offer, rejected, withdrawn | no reply ever comes. "Ghosted" is a real state the process never names. A timeout transition would fix it |
+| **A conversation with customer support** | new, assigned, waiting on you, waiting on them, escalated, resolved, reopened | you reply after the ticket auto-closes. Does it reopen, or start a new ticket and lose the history? |
+
+Try it on something that frustrates you: list its states, list the events, and find the
+cell. Explaining *why* a system behaves badly ("they never handled 'cancelled after
+boarding'") is the first step to fixing it, or to working around it.
+
+Agents are good at this. "Model the process of renewing a passport as a state machine,
+and list the edge cases that trip people up" is a fine prompt. Check its answer against the
+official guide before you rely on it.
+
 ## How to ask
 
 Paste something like this:
