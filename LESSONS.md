@@ -149,7 +149,8 @@ integrity and users' original data still matter.
 For solved problems (scheduling, dashboards, sync, notifications, dialogs, auth), have the
 agent research maintained libraries first and record what it compared. Agents will happily
 write a 600-line custom scheduler. The configuration of a standard tool is usually smaller
-and better.
+and better. The same goes for procedures: check for a skill before improvising. See
+`PRIOR-ART-AND-SKILLS.md`.
 
 ## Secrets and accounts
 

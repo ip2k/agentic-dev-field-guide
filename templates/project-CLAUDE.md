@@ -26,6 +26,12 @@ in docs/inventory.md.>
 
 CI: `.github/workflows/<file>.yml` runs <what> on every PR. A PR merges only when it is green.
 
+## Skills and tools adopted
+
+- Skills: <names> (pre-approved for this project; ask before loading others).
+- Code intelligence: <Rarefaction / Serena / graphify, with the result of the 5-minute check>.
+- Key libraries chosen over custom code: <library: why; see docs/decisions.md>.
+
 ## Where the truth lives
 
 - `docs/<...>.md`: <architecture / decisions / operations>

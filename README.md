@@ -18,6 +18,7 @@ then give the whole folder to Claude and let it adapt the templates to you
 | `templates/global-CLAUDE.md` | Claude | a starter `~/.claude/CLAUDE.md`, the instructions every session reads |
 | `templates/project-CLAUDE.md` | Claude | a starter per-repository `CLAUDE.md` / `AGENTS.md` |
 | `templates/github/` | Claude | a hardened GitHub Actions CI and secret-scan workflow, and a PR template |
+| `PRIOR-ART-AND-SKILLS.md` | both | look before building: research existing libraries and platform features, use skills, and only then write custom code |
 | `CODE-INTEL.md` | both | Rarefaction, Serena and graphify: code-navigation tools for the agent, and how to check that they work |
 | `GITHUB.md` | both | branches, PRs as the record, changelogs, free CI in private repos |
 | `CLOUD.md` | both | DigitalOcean for always-on services, OpenRouter for model APIs, and how to keep secrets out of transcripts |
@@ -25,8 +26,9 @@ then give the whole folder to Claude and let it adapt the templates to you
 ## Reading order
 
 1. `LESSONS.md`, about 15 minutes. This is the part worth the most.
-2. `templates/global-CLAUDE.md`, to see what a "constitution" for the agent looks like.
-3. Skim the rest. Come back to each when you need it.
+2. `PRIOR-ART-AND-SKILLS.md`, the habit that saves the most wasted work.
+3. `templates/global-CLAUDE.md`, to see what a "constitution" for the agent looks like.
+4. Skim the rest. Come back to each when you need it.
 
 ## Setup (about 30 minutes)
 
@@ -62,6 +64,11 @@ then give the whole folder to Claude and let it adapt the templates to you
   Every time you say "no, not like that" twice, it becomes a rule.
 - **The agent works on a branch and proves it with tests. You read the PR.** The pull request
   description is the record of what changed, why, and how it was tested.
+- **Look before you build.** An agent will happily write code for a problem that a
+  maintained library, a platform feature or an existing skill already solves. Make it search
+  for prior art and record what it found first (`PRIOR-ART-AND-SKILLS.md`). Give it the
+  project's call graph (Rarefaction, in `CODE-INTEL.md`) so it reads code precisely
+  instead of grepping.
 - **Trust, but make it cheap to verify.** The agent's report of success is a claim. Tests,
   CI, and a quick look at the real output turn it into a fact.
 
