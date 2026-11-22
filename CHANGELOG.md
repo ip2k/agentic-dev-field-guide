@@ -5,6 +5,12 @@ All notable changes to this guide are recorded here, in
 
 ## [Unreleased]
 
+### Fixed
+
+- `templates/global-CLAUDE.md`: the optional-modules example pointed at `~/.claude/rules/`, which
+  Claude Code loads at launch, so the example defeated its own purpose. It now uses
+  `~/.claude/guides/` and says why.
+
 ### Added
 - `MODELS-EFFORT-CONTEXT.md`: choosing Haiku, Sonnet, Opus or Fable by how much a step
   decides; what effort levels do and how to set them; context window sizing (we cap
