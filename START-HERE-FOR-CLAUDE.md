@@ -20,7 +20,9 @@ setup that fits **this** developer. Do not copy it blindly.
 ## Step 1: read
 
 Read every file in this folder: `README.md`, `LESSONS.md`, `PRIOR-ART-AND-SKILLS.md`,
-`STATE-MACHINES.md`, `CODE-INTEL.md`, `GITHUB.md`, `CLOUD.md`, and `templates/`. Then check the machine: OS, shell, whether `git`, `gh`, `node`,
+`STATE-MACHINES.md`, `MODELS-EFFORT-CONTEXT.md`, `GAME-THEORY.md`,
+`CROSS-DOMAIN.md`, `CODE-INTEL.md`, `GITHUB.md`, `CLOUD.md`, and `templates/`. Then check
+the machine: OS, shell, whether `git`, `gh`, `node`,
 `uv`/`uvx`, and language servers (`rust-analyzer`, `clangd`, `sourcekit-lsp`, `pyright`) are
 installed, whether `gh auth status` is logged in, and what is in `~/.claude/` already.
 

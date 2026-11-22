@@ -88,12 +88,14 @@ three of five verifiers died and the run returned almost nothing. Rules:
   out.
 
 ### 12. Pick the lightest model and effort that works.
-Set the model and the reasoning effort explicitly for each sub-agent. A large model on high
-effort is for architecture, hard debugging, security and final judgment. A smaller model on
-low or medium effort is right for searches, inventories, running tests and reporting,
-mechanical edits, and scoped implementation from a clear spec. Escalate one step at a time
+Set the model and the reasoning effort explicitly for each sub-agent. If you set neither, a
+sub-agent inherits the session's, so a session at `xhigh` pays `xhigh` prices for every file
+search it sends out. Pick by how much the step has to *decide*: Haiku for extraction and
+checked mechanical work, Sonnet for scoped implementation, Opus at high effort for
+architecture, security and hard debugging, Fable for the hardest novel problems and the
+advisor or project-manager seat. Escalate one step at a time
 when a result fails its check because the task was harder than it looked. A thin brief is
-fixed with a better brief, not with more effort.
+fixed with a better brief, not with more effort. Details in `MODELS-EFFORT-CONTEXT.md`.
 
 ## Repositories and data
 
@@ -191,6 +193,25 @@ power-cycled a healthy, running machine three times. Asking the agent for every 
 event and every state × event cell turns hidden edge cases into blank cells you can see,
 and shows quickly whether the agent (and you) really understand the domain. See
 `STATE-MACHINES.md`.
+
+### 27. Compaction is a lossy summary. Write the handoff first.
+Compaction replaces the conversation with a model-written summary. Exact errors, diffs and
+the reasons behind decisions are the first things lost. Before compacting, have the agent
+write the objective, the branch and pushed SHA, what is left and the next step into a file.
+Compact at natural breaks, not mid-debug. Keep the window smaller than the maximum: we cap
+auto-compaction at 300K tokens rather than 1M, because long contexts cost more on every turn
+and drift.
+
+### 28. Cheap agent work changes the best strategy.
+Many best practices are the right response to expensive human time. When writing, testing
+and reading cost an agent minutes, the answers flip: try three approaches, test every cell,
+document every PR, read the whole codebase. The bottleneck moves to your review time and to
+verification. See `GAME-THEORY.md`.
+
+### 29. Somebody in another field has solved your problem.
+Fields name the same problems differently: hysteresis, debounce, cooldown and rate limiting
+are one idea. Ask the agent to restate a hard problem in neutral terms and say how other
+industries solve it, with their terms of art. See `CROSS-DOMAIN.md`.
 
 ## Visual output
 
