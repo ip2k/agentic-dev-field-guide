@@ -19,8 +19,8 @@ setup that fits **this** developer. Do not copy it blindly.
 
 ## Step 1: read
 
-Read every file in this folder: `README.md`, `LESSONS.md`, `CODE-INTEL.md`, `GITHUB.md`,
-`CLOUD.md`, and `templates/`. Then check the machine: OS, shell, whether `git`, `gh`, `node`,
+Read every file in this folder: `README.md`, `LESSONS.md`, `PRIOR-ART-AND-SKILLS.md`,
+`CODE-INTEL.md`, `GITHUB.md`, `CLOUD.md`, and `templates/`. Then check the machine: OS, shell, whether `git`, `gh`, `node`,
 `uv`/`uvx`, and language servers (`rust-analyzer`, `clangd`, `sourcekit-lsp`, `pyright`) are
 installed, whether `gh auth status` is logged in, and what is in `~/.claude/` already.
 
@@ -50,16 +50,21 @@ chat) with at most four questions per round. Put your recommendation first in ea
    (`/tmp` purge, `security`, `brew`) for their OS.
 2. Offer `templates/project-CLAUDE.md` for their current main project, written **after**
    reading that project's code.
-3. Offer the code-intelligence MCP servers from `CODE-INTEL.md` for their languages. Give
+3. Offer the code-intelligence MCP servers from `CODE-INTEL.md` for their languages,
+   recommending Rarefaction first (call graph, tests and impact for a symbol in one call). Give
    them the install commands, or run them with their yes. Never run `graphify install`,
    `graphify claude install` or `graphify hook install`: they add hooks and edit CLAUDE.md.
    Then run the verification it describes and report the result honestly, including
    anything that did not work.
-4. Offer the GitHub templates in `templates/github/` for their main repository. `ci.yml`
+4. Skills: list what is already installed (`~/.claude/skills/`, `/plugin`), and point
+   them to marketplaces worth browsing (see `PRIOR-ART-AND-SKILLS.md`). Ask which
+   to adopt for their main project, and say which plugins carry hooks before installing any.
+   Make sure the "prior art first" and "skills" rules are in their global CLAUDE.md.
+5. Offer the GitHub templates in `templates/github/` for their main repository. `ci.yml`
    ships as a Node example: rewrite the setup and commands for the real stack, or it fails.
    Point out that a required status check is matched by job name, so renaming the job or
    matrix later means updating branch protection.
-5. If they want, add read-only tool permissions to `~/.claude/settings.json`, for example
+6. If they want, add read-only tool permissions to `~/.claude/settings.json`, for example
    `mcp__rarefaction__status`, `mcp__rarefaction__orient`, `mcp__rarefaction__scope` and
    Serena's `find_symbol`, `find_referencing_symbols`, `get_symbols_overview`,
    `get_diagnostics_for_file` (as `mcp__serena__<name>`), so they stop getting prompted for them. Note that a
