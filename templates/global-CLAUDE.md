@@ -141,6 +141,8 @@ and record the answer in that project's CLAUDE.md.
 
 <OPTIONAL MODULES: keep long rules in separate files. A plain path is only a pointer
 (the agent reads it when relevant). An `@path` import line loads the file into every session,
-so use imports only for short files. Examples:
-- When a project is a business: read ~/.claude/rules/business.md
-- Before contributing to a repo I don't own: read ~/.claude/rules/upstream.md>
+so use imports only for short files. Don't put these files in ~/.claude/rules/: Claude Code
+loads every file there at launch (unless it has `paths:` frontmatter), which saves nothing.
+Use a folder of your own, such as ~/.claude/guides/. Examples:
+- When a project is a business: read ~/.claude/guides/business.md
+- Before contributing to a repo I don't own: read ~/.claude/guides/upstream.md>
