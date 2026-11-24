@@ -127,6 +127,8 @@ and record the answer in that project's CLAUDE.md.
   pushed SHA, what's left, next step) before compacting or stopping. Compact at natural
   breaks, never mid-debugging; `/clear` between unrelated tasks. The auto-compaction window
   is `autoCompactWindow` in ~/.claude/settings.json (<e.g. 300000>); don't change it unasked.
+- Use a lean custom agent (a short `tools:` list) for repeated sub-agent work that does not need
+  MCP tools or skills.
 
 ## Writing
 

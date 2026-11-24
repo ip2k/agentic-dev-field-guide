@@ -20,7 +20,7 @@ then give the whole folder to Claude and let it adapt the templates to you
 | `templates/github/` | Claude | a hardened GitHub Actions CI and secret-scan workflow, and a PR template |
 | `PRIOR-ART-AND-SKILLS.md` | both | look before building: research existing libraries and platform features, use skills, and only then write custom code |
 | `STATE-MACHINES.md` | both | ask the agent for a finite state machine of anything stateful: every state × event, so edge cases show up before users hit them |
-| `MODELS-EFFORT-CONTEXT.md` | both | right-sizing: which model (Haiku, Sonnet, Opus, Fable) for which work, what effort levels do, context window size, when and how to compact, advisors and orchestrators |
+| `MODELS-EFFORT-CONTEXT.md` | both | right-sizing: which model (Haiku, Sonnet, Opus, Fable) for which work, what effort levels do, context window size, when and how to compact, trimming plugins and MCP servers, lean custom agents, advisors and orchestrators |
 | `GAME-THEORY.md` | both | look at a process as a game: cheap agent work flips old best practices, moves the bottleneck to review, and changes incentives |
 | `CROSS-DOMAIN.md` | both | borrow proven solutions from other industries by mapping their jargon to the general problem (TRIZ, analogical transfer) |
 | `CODE-INTEL.md` | both | Rarefaction, Serena and graphify: code-navigation tools for the agent, and how to check that they work |

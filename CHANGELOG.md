@@ -7,11 +7,16 @@ All notable changes to this guide are recorded here, in
 
 ### Fixed
 
+- `MODELS-EFFORT-CONTEXT.md`: corrected our starting context and working room (about 100K, not
+  130–160K), and that `auto` compaction is per model only.
+
 - `templates/global-CLAUDE.md`: the optional-modules example pointed at `~/.claude/rules/`, which
   Claude Code loads at launch, so the example defeated its own purpose. It now uses
   `~/.claude/guides/` and says why.
 
 ### Added
+- `MODELS-EFFORT-CONTEXT.md`: measured window sizes and a sizing rule, what auto-sizing does
+  and doesn't exist, how to audit plugins and MCP servers, and lean custom agents.
 - `MODELS-EFFORT-CONTEXT.md`: choosing Haiku, Sonnet, Opus or Fable by how much a step
   decides; what effort levels do and how to set them; context window sizing (we cap
   auto-compaction at 300K); what compaction keeps and loses, and when to compact;
