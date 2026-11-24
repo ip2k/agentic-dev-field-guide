@@ -9,7 +9,8 @@ Three settings decide most of what a Claude Code session costs and how good its 
 They are separate controls. Using one when you needed another is the most common way to
 waste money or get worse results.
 
-Facts here were checked against Anthropic's docs on 2026-11-21, with Claude Code 2.1.3xx.
+Facts here were checked against Anthropic's docs on 2026-11-21 (context and custom agents on
+2026-11-24), with Claude Code 2.1.3xx.
 Model names, prices and defaults change every few months. The links at the bottom are
 the source of truth. The **patterns** are what last.
 
@@ -100,24 +101,44 @@ Bigger is not free:
   to instructions and findings from early in a very long session. It repeats work, forgets
   a decision, or picks up a stale fact.
 - **The fixed part is bigger than you think.** Tool definitions, MCP servers, skill and
-  agent lists, and your CLAUDE.md files are loaded before you type anything. Our sessions
-  start at around 100–140K tokens. `/context` shows the live breakdown. Trim what you
-  don't use.
+  agent lists, and your CLAUDE.md files are loaded before you type anything. Our main
+  sessions start at around 140K tokens. `/context` shows the live breakdown. Section 4
+  covers trimming it.
 
 ### What we landed on
 
 We cap the **compaction window at 300K tokens** (`"autoCompactWindow": 300000` in
-`~/.claude/settings.json`) instead of letting sessions run toward 1M. With our ~136K fixed
-start, that leaves roughly 130–160K of working room before compaction (the trigger sits a
-little below the window, to keep room for output). That matched the
-behaviour we liked in another agent client, and it keeps sessions sharp and cheap.
+`~/.claude/settings.json`) instead of letting sessions run toward 1M. Compaction fires about
+33K below the window, so at 267K (Claude Code 2.1.330). Our main sessions sit at about 165K
+right after a compaction, which leaves about **100K of working room**, not the 130–160K we
+first wrote here.
 
-Lower it (minimum 100K) if your fixed context is small. Raise it for work that has to
-hold a lot at once, such as a big refactor plan or a long log investigation. **Never set
-it below your fixed starting context.** If you do, compaction fires on every turn and
-cannot help. Out-of-range values behave differently depending on where you set them: the
-docs describe clamping for the environment variable, and reading the Claude Code 2.1.284
-code we found an out-of-range settings value is dropped, not clamped. After changing it, check `/context`.
+In November 2026 we replayed six weeks of our own transcripts at other window sizes:
+
+| window | main sessions | sub-agents |
+|---|---|---|
+| 400K vs 300K | cost −2% to +5%, about 45% fewer compactions | cost +5% to +8% |
+| 500K vs 300K | cost +3% to +12% | about +12% to +15% (weaker estimate) |
+| 1M vs 300K | cost +32% to +49% | about +31% to +36% (weaker estimate) |
+
+These are API list prices from one setup, and the spread comes from how much rework you
+assume each compaction causes. For our main sessions 400K broke even at about 5–6 extra
+requests of rework per compaction, and we measured 2–3. Re-read files are measurable;
+forgotten decisions are not, so the real figure may be higher. Sub-agents were about
+four-fifths of our spend, and they inherit the window, so raising it everywhere cost more
+than it saved.
+
+A sizing rule, better than copying our number:
+
+> window = median context right after a compaction + 33K + 100–150K of working room
+
+Re-measure when the fixed prompt moves by about 20K. Lower the window (minimum 100K) if your
+fixed context is small. Raise it for one launch (`claude --autocompact 400k`) when a long
+session has few sub-agents and must hold a lot at once. **Never set it below your fixed
+starting context.** If you do, compaction fires on every turn and cannot help. Out-of-range
+values behave differently depending on where you set them: the docs describe clamping for
+the environment variable, and reading the Claude Code 2.1.284 code we found an out-of-range
+settings value is dropped, not clamped. After changing it, check `/context`.
 
 Other ways to set it (the environment variable takes precedence over all of them):
 
@@ -126,7 +147,20 @@ Other ways to set it (the environment variable takes precedence over all of them
 - the `--autocompact` flag, for one launch;
 - `/autocompact <value>`, saved per model under `modelSettings`. Here `200` means 200K,
   and `/autocompact auto` restores the default;
-- the `autoCompactWindow` setting, for all models.
+- the `autoCompactWindow` setting, for all models;
+- `autoCompactWindow` in a custom agent's frontmatter. It can only lower that agent's
+  window.
+
+### Is there auto-sizing?
+
+Not one that adapts to your work. From reading the 2.1.330 program (not tested live):
+
+- **`auto` is not adaptive.** For Opus 5.5 it resolved to about 1M, compacting near 967K. It
+  is accepted per model under `modelSettings`; as the top-level value it was dropped.
+- **Idle compaction is on by default.** After about 54 idle minutes it compacts a context of
+  200K or more, before the one-hour cache expires. Keep it. A sleeping computer skips it.
+- **Editing the settings file does not appear to reach a running session.** `/autocompact`
+  does.
 
 ### What compaction actually does
 
@@ -169,9 +203,93 @@ that is cheap. After a long break it means one full-price turn.
   and carries nothing stale. Sub-agents are the other way to keep the main context clean:
   send the large reads out, and get a conclusion back.
 - **Don't fight auto-compaction.** If a session keeps hitting the threshold, the fix is
-  usually smaller tasks, more delegation, or a trimmed fixed context, not a bigger window.
+  usually smaller tasks, more delegation, or a trimmed fixed context, not a bigger window. In
+  our data five marathon sessions caused two-thirds of all main-session compactions.
 
-## 4. Advisors and orchestrators: a smarter mind above cheaper hands
+## 4. Trim the fixed context: plugins, MCP servers and custom agents
+
+Everything loaded at startup is carried on every request and survives every compaction. The
+main session and its sub-agents need **different** fixes.
+
+### Main session: switch off what you don't use
+
+We had 109 plugins enabled. Over twelve weeks, the transcripts showed only a handful in use.
+We measured the first request of a one-word session (Claude Code 2.1.330, 2026-11-24; your
+numbers will differ):
+
+| setup | start of session |
+|---|---|
+| everything on | 82.1K tokens |
+| the 11 plugins worth keeping | 63.6K |
+| no plugins | 58.8K |
+
+Deferred MCP tools are cheap but not free: their schemas load on demand, but names and
+server instructions do not. One server with 229 tools still cost 4.5K tokens; one with three
+tools cost almost nothing.
+
+How to audit:
+
+1. `/context` for the live breakdown, and `claude plugin details <name>` for each plugin's
+   skills, agents, hooks and estimated always-on tokens.
+2. Count real use in `~/.claude/projects/**/*.jsonl`: `Skill` calls, `Agent` calls by
+   `subagent_type`, and `mcp__<server>__*` calls. Do not trust a plugin's own usage counter
+   when it has hooks, because hook runs can count as use.
+3. Switch off (do not uninstall) whatever is unused, and enable a plugin per project, in that
+   project's `.claude/settings.json`, when only one project needs it.
+4. Check your projects' CLAUDE.md for skills they name before you switch off their plugin.
+5. Compare before and after: `claude -p "Reply ok" --output-format json --settings '<json>'`
+   tries a plugin set without changing your settings.
+6. Look for hooks and telemetry. A plugin update can add hooks to one you already approved.
+
+### Sub-agents: use lean custom agents
+
+Cutting plugins barely helped sub-agents: a general-purpose agent went from 51.6K to 49.9K.
+An agent with only the tools it needs was much smaller. First request, one run each:
+
+| agent | starting context |
+|---|---|
+| `general-purpose` | 51.6K |
+| custom agent with no tool list (inherits everything) | 51.2K |
+| built-in `Explore` | 32.5K |
+| custom agent with `tools: Read, Grep, Glob, Bash` | 10.3K |
+| the same with `omitClaudeMd: true` | 5.3K |
+
+So the saving comes from the **tool allowlist**, not from being a custom agent. A lean agent
+gives up MCP tools and skills, so use it where the task does not need them.
+
+A custom agent is a Markdown file in `.claude/agents/` (project) or `~/.claude/agents/`
+(every project). Name it as the Agent tool's `subagent_type`, or as `agentType` in a workflow
+script:
+
+```markdown
+---
+name: lean-reader
+description: Reads code and reports findings. Cannot edit.
+tools: Read, Grep, Glob, Bash
+model: sonnet
+effort: medium
+---
+Answer only the question in the brief, with file:line evidence. End with what you checked,
+what you did not, and what is uncertain.
+```
+
+`Bash` can still write files, so a tool list without Edit is not a read-only sandbox.
+
+Fields worth knowing (`tools`, `disallowedTools`, `model` and `effort` are the main four):
+
+- `autoCompactWindow`: only lowers the window. Useful for agents that read a lot.
+- `omitClaudeMd: true`: skips your CLAUDE.md files. This also drops their **safety rules**,
+  so use it only for agents whose tools cannot do harm.
+- `skills`: preloads the full text of the named skills.
+- `isolation: worktree`: runs in its own git worktree.
+- `mcpServers`, `hooks`, `permissionMode`: ignored for agents that ship in a plugin.
+
+Make one when you keep spawning the same worker with the same instructions. Three or four are
+enough: a reader, a test-runner, an implementer, a reviewer. Every agent's description is
+carried in the main session, so keep them short, and remember that plugins bring agents of
+their own. Claude Code warns above 15K tokens of descriptions.
+
+## 5. Advisors and orchestrators: a smarter mind above cheaper hands
 
 There are two related patterns. Both put a stronger model where judgment matters and
 cheaper models where the work is routine.
@@ -224,7 +342,7 @@ says whether it looks complicated or novel enough to benefit from a Fable adviso
 the answer isn't clear, it asks rather than deciding. The choice goes in the project's
 CLAUDE.md.
 
-## 5. Give Claude the authority to right-size
+## 6. Give Claude the authority to right-size
 
 Most sub-agents default to the session's model and effort. Tell them they are allowed, and expected, to choose. Paste
 something like this into your global CLAUDE.md, and adjust the tiers to your plan and
